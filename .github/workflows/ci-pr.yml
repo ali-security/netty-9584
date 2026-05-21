@@ -17,7 +17,7 @@ name: Build PR
 
 on:
   pull_request:
-    branches: [ "4.1"]
+    branches: ['4.1']
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -36,13 +36,13 @@ concurrency:
 
 jobs:
   verify-pr:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: zulu
           java-version: '8'
 
       # Cache .m2/repository
@@ -76,7 +76,7 @@ jobs:
       - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: zulu
           java-version: '11'
 
       # Cache .m2/repository
@@ -114,7 +114,7 @@ jobs:
 
   build-pr-cross:
     # The host should always be Linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -169,43 +169,43 @@ jobs:
             JAVA_HOME=/usr/lib/jvm/java-11-openjdk-${{ matrix.java_arch || matrix.arch }} ./mvnw -V -B -ntp -pl testsuite-native -am clean package -DskipTests=true -Dcheckstyle.skip=true -DskipNativeTestsuite=false -Dtcnative.classifier=
 
   build-pr:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         include:
           - setup: linux-x86_64-java8
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.18.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.18.yaml run build"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.18.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.18.yaml run build
           - setup: linux-x86_64-java11
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml run build"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml run build
           - setup: linux-x86_64-java11-graal
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.graalvm111.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.graalvm111.yaml run build"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.graalvm111.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.graalvm111.yaml run build
           - setup: linux-x86_64-java17
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-7.117.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-7.117.yaml run build"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-7.117.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-7.117.yaml run build
           - setup: linux-x86_64-java21
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.21.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.21.yaml run build-with-oio-testsuite"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.21.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.21.yaml run build-with-oio-testsuite
           - setup: linux-x86_64-java24
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.24.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.24.yaml run build"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.24.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.24.yaml run build
           - setup: linux-x86_64-java25
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.25.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.25.yaml run build"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.25.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.25.yaml run build
           - setup: linux-x86_64-java11-boringssl
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml run build-leak-boringssl-static"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml run build-leak-boringssl-static
           - setup: linux-x86_64-java11-adaptive
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml build"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml run build-leak-adaptive"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml build
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml run build-leak-adaptive
           - setup: linux-x86_64-java11-awslc
-            docker-compose-build: "-f docker/docker-compose.yaml -f docker/docker-compose.al2023.yaml build"
-            docker-compose-install-tcnative: "-f docker/docker-compose.yaml -f docker/docker-compose.al2023.yaml run install-tcnative"
-            docker-compose-update-tcnative-version: "-f docker/docker-compose.yaml -f docker/docker-compose.al2023.yaml run update-tcnative-version"
-            docker-compose-run: "-f docker/docker-compose.yaml -f docker/docker-compose.al2023.yaml run build"
+            docker-compose-build: -f docker/docker-compose.yaml -f docker/docker-compose.al2023.yaml build
+            docker-compose-install-tcnative: -f docker/docker-compose.yaml -f docker/docker-compose.al2023.yaml run install-tcnative
+            docker-compose-update-tcnative-version: -f docker/docker-compose.yaml -f docker/docker-compose.al2023.yaml run update-tcnative-version
+            docker-compose-run: -f docker/docker-compose.yaml -f docker/docker-compose.al2023.yaml run build
 
     name: ${{ matrix.setup }} build
     needs: verify-pr
@@ -277,7 +277,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results-${{ matrix.setup }}
-          path: 'netty/**/target/surefire-reports/TEST-*.xml'
+          path: netty/**/target/surefire-reports/TEST-*.xml
 
       - uses: actions/upload-artifact@v4
         if: ${{ failure() || cancelled() }}
@@ -300,7 +300,7 @@ jobs:
             os: macos-15
 
     runs-on: ${{ matrix.os }}
-    name:  ${{ matrix.setup }}  build
+    name: ${{ matrix.setup }}  build
     needs: verify-pr
 
     steps:
@@ -309,7 +309,7 @@ jobs:
       - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: zulu
           java-version: '8'
 
       # Cache .m2/repository

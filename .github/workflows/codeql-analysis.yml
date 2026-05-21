@@ -13,17 +13,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 # ----------------------------------------------------------------------------
-name: "CodeQL"
+name: CodeQL
 
 on:
   push:
-    branches: ["4.1", "4.2"]
+    branches: ['4.1', '4.2']
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: ["4.1", "4.2"]
-  schedule:
-    - cron: '0 13 * * 3'
-
+    branches: ['4.1', '4.2']
 env:
   MAVEN_OPTS: -Xmx6g -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryhandler.count=5 -Dmaven.wagon.httpconnectionManager.ttlSeconds=240
 
@@ -40,14 +37,14 @@ concurrency:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     strategy:
       fail-fast: false
       matrix:
         # Override automatic language detection by changing the below list
         # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
-        language: [ 'java', 'cpp' ]
+        language: [java, cpp]
 
     steps:
       - name: Checkout repository
@@ -66,7 +63,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
-          distribution: 'zulu'
+          distribution: zulu
           java-version: '11'
 
       - name: Initialize CodeQL

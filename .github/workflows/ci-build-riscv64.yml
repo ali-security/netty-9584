@@ -17,12 +17,7 @@ name: Build project on RiscV 64
 
 on:
   push:
-    branches: [ "4.1"]
-
-  schedule:
-    - cron: '30 1 * * *'  # At 01:30 every day.
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: ['4.1']
   workflow_dispatch:
 
 env:
@@ -40,7 +35,7 @@ concurrency:
 jobs:
   build-riscv64:
     # The host should always be Linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     name: linux-riscv64-verify-native
     permissions:
